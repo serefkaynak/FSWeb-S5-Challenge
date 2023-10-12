@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const Tablar = (konu) => {
   // GÖREV 3
   // ---------------------
@@ -13,6 +15,17 @@ const Tablar = (konu) => {
   //   <div class="tab">teknoloji</div>
   // </div>
   //
+
+  const topicsDiv = document.createElement("div");
+  topicsDiv.classList.add("topics");
+
+  for (let i = 0; i < konu.length; i++) {
+    const tab = document.createElement("div");
+    tab.classList.add("tab");
+    tab.textContent = konu[i];
+    topicsDiv.appendChild(tab);
+  }
+
 }
 
 const tabEkleyici = (secici) => {
