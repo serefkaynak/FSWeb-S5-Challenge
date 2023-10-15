@@ -1,4 +1,4 @@
-import { axios } from 'axios'
+import axios from 'axios'
 const Card = (makale) => {
   // GÖREV 5
   // ---------------------
@@ -23,28 +23,32 @@ const Card = (makale) => {
 
   const headline = document.createElement("div");
     headline.classList.add("headline");
-    headline.textContent = makale.baslik;
-    card.appendChild(headline);
+    headline.textContent = makale.anabaslik;
+    card.append(headline);
 
   const author = document.createElement("div");
     author.classList.add("author");
-    card.appendChild(author);
+
     const imgContainer = document.createElement("div");
       imgContainer.classList.add("img-container");
-      author.appendChild(imgContainer);
+
       const img = document.createElement("img");
-        img.src = makale.yazarFoto;
-        imgContainer.appendChild(img);
+        img.setAttribute("src", makale.yazarFoto);
+        imgContainer.append(img);
+        author.append(imgContainer);
+
         const span = document.createElement("span");
           span.textContent = makale.yazarAdi + " tarafından";
-          author.appendChild(span);
-          return card;
+          author.append(span);
+    card.append(author);
+
+  return card;
 
 }
 
 
 
-const cardEkleyici = (secici) => {
+const cardEkleyici = async (secici) => {
   // GÖREV 6
   // ---------------------
   // Tek bağımsız değişkeni olarak bir css seçici alan bu fonksiyonu uygulayın.
@@ -55,23 +59,18 @@ const cardEkleyici = (secici) => {
   //
 
   const cardsContainer = document.querySelector(secici);
-  cardsContainer.classList.add("cards-container");
-  cardsContainer.innerHTML = "";
 
-  axios.get("http://localhost:5001/api/makaleler").then((res) => {
-    const { makaleler } = res.data;
-    for (const key in makaleler) {
-      const array = makaleler[key];
-      array.forEach((el) => {
-        const card = Card(el);
+  axios.get("http://localhost:5001/api/makaleler").then((response) => {
+      const articles = response.data.makaleler;
+
+      for (const key in articles) {
+        articles[key].forEach((makale) => {
+        const card = Card(makale);
         cardsContainer.append(card);
       });
     }
   });
-    return cardsContainer;
-
-
-    };
+};
 
 
 export { Card, cardEkleyici }
